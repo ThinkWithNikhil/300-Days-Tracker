@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>300 Day Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(30, 20px);
+      gap: 5px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .grid input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      appearance: none;
+      background-color: #e0e0e0;
+      border-radius: 3px;
+      transition: background-color 0.3s ease;
+    }
+
+    .grid input[type="checkbox"]:checked {
+      background-color: #4CAF50;
+    }
+
+    .reset {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ff4b4b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .reset:hover {
+      background-color: #d14040;
+    }
+  </style>
+</head>
+<body>
+  <h1>300 Days Tracker</h1>
+  <div class="grid" id="checkboxGrid"></div>
+  <button class="reset" id="resetButton">Reset All</button>
+
+  <script>
+    const grid = document.getElementById('checkboxGrid');
+    const resetButton = document.getElementById('resetButton');
+    const checkboxCount = 300;
+
+    // Initialize checkboxes
+    function createCheckboxes() {
+      for (let i = 0; i < checkboxCount; i++) {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox${i}`;
+        checkbox.checked = getCheckboxState(i);
+        checkbox.addEventListener('change', () => saveCheckboxState(i, checkbox.checked));
+        grid.appendChild(checkbox);
+      }
+    }
+
+    // Save checkbox state in localStorage
+    function saveCheckboxState(index, checked) {
+      localStorage.setItem(`checkbox${index}`, checked);
+    }
+
+    // Get checkbox state from localStorage
+    function getCheckboxState(index) {
+      return localStorage.getItem(`checkbox${index}`) === 'true';
+    }
+
+    // Reset all checkboxes
+    resetButton.addEventListener('click', () => {
+      for (let i = 0; i < checkboxCount; i++) {
+        localStorage.setItem(`checkbox${i}`, false);
+        document.getElementById(`checkbox${i}`).checked = false;
+      }
+    });
+
+    // Create the checkboxes on page load
+    createCheckboxes();
+  </script>
+</body>
+</html>
